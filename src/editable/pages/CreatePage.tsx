@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, FileText, ImageIcon, Lock, PlusCircle, Send, Sparkles } from 'lucide-react'
+import { ArrowRight, CheckCircle2, ImageIcon, Lock, Send } from 'lucide-react'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
@@ -21,18 +21,7 @@ type DraftPost = {
 }
 
 const STORE_KEY = 'slot4:created-posts'
-
-const taskIcon: Record<string, typeof FileText> = {
-  article: FileText,
-  listing: Sparkles,
-  classified: PlusCircle,
-  image: ImageIcon,
-  profile: Sparkles,
-  pdf: FileText,
-  sbm: ArrowRight,
-}
-
-const fieldClass = 'rounded-2xl border border-[var(--editable-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--editable-page-text,#2f1d16)] outline-none transition placeholder:text-current/35 focus:border-current'
+const fieldClass = 'w-full border-b border-[var(--editable-border)] bg-transparent px-0 py-3 text-base font-medium text-[var(--slot4-page-text)] outline-none transition placeholder:text-[var(--slot4-muted-text)]/65 focus:border-[var(--slot4-accent-fill)]'
 
 const saveDraft = (draft: DraftPost) => {
   try {
@@ -46,8 +35,9 @@ const saveDraft = (draft: DraftPost) => {
 
 export default function CreatePage() {
   const { session } = useEditableLocalAuthSession()
-  const enabledTasks = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled), [])
-  const [task, setTask] = useState<TaskKey>((enabledTasks[0]?.key || 'article') as TaskKey)
+  const enabledTasks = useMemo(() => SITE_CONFIG.tasks.filter((item) => item.enabled), [])
+  const task = (enabledTasks[0]?.key || 'image') as TaskKey
+  const activeTask = enabledTasks[0]
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [summary, setSummary] = useState('')
@@ -55,8 +45,6 @@ export default function CreatePage() {
   const [image, setImage] = useState('')
   const [body, setBody] = useState('')
   const [created, setCreated] = useState<DraftPost | null>(null)
-
-  const activeTask = enabledTasks.find((item) => item.key === task) || enabledTasks[0]
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -84,18 +72,20 @@ export default function CreatePage() {
   if (!session) {
     return (
       <EditableSiteShell>
-        <main className="min-h-screen bg-[var(--editable-page-bg,#fff7ee)] px-4 py-16 text-[var(--editable-page-text,#2f1d16)] sm:px-6 lg:px-8">
-          <section className="mx-auto grid max-w-5xl gap-8 rounded-[2.8rem] border border-[var(--editable-border)] bg-white/75 p-7 shadow-[0_30px_90px_rgba(15,23,42,0.08)] md:grid-cols-[0.9fr_1.1fr] md:p-10">
-            <div className="flex h-full min-h-72 items-center justify-center rounded-[2rem] bg-[var(--editable-page-text,#2f1d16)] text-[var(--editable-page-bg,#fff7ee)]">
-              <Lock className="h-20 w-20 opacity-80" />
-            </div>
-            <div className="self-center">
-              <p className="text-xs font-black uppercase tracking-[0.28em] opacity-55">{pagesContent.create.locked.badge}</p>
-              <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.08em] sm:text-7xl">{pagesContent.create.locked.title}</h1>
-              <p className="mt-6 max-w-xl text-base font-semibold leading-8 opacity-70">{pagesContent.create.locked.description}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/login" className="inline-flex items-center gap-2 rounded-full bg-[var(--editable-page-text,#2f1d16)] px-6 py-3 text-sm font-black text-[var(--editable-page-bg,#fff7ee)]">Login <ArrowRight className="h-4 w-4" /></Link>
-                <Link href="/signup" className="inline-flex items-center gap-2 rounded-full border border-[var(--editable-border)] bg-white px-6 py-3 text-sm font-black">Sign up</Link>
+        <main className="min-h-screen bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
+          <section className="editable-grain bg-[var(--slot4-dark-bg)] text-[var(--slot4-dark-text)]">
+            <div className="mx-auto grid min-h-[620px] max-w-[var(--editable-container)] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--slot4-accent)]">{pagesContent.create.locked.badge}</p>
+                <h1 className="editable-tech-type mt-7 max-w-4xl text-[clamp(3.8rem,8vw,8.5rem)] font-medium leading-[0.84]">Bring your next story into focus.</h1>
+                <p className="mt-8 max-w-xl text-lg leading-8 text-white/55">{pagesContent.create.locked.description}</p>
+                <div className="mt-10 flex flex-wrap gap-3">
+                  <Link href="/login" className="inline-flex items-center gap-3 bg-[var(--slot4-accent)] px-7 py-4 text-sm font-semibold text-[#171415]">Login <ArrowRight className="h-4 w-4" /></Link>
+                  <Link href="/signup" className="border border-white/25 px-7 py-4 text-sm font-semibold text-white">Sign up</Link>
+                </div>
+              </div>
+              <div className="relative mx-auto grid aspect-square w-full max-w-md place-items-center rounded-full border border-white/15 bg-[radial-gradient(circle,rgba(200,149,149,0.22),transparent_65%)]">
+                <div className="grid h-32 w-32 place-items-center rounded-full border border-[var(--slot4-accent)] text-[var(--slot4-accent)]"><Lock className="h-12 w-12" /></div>
               </div>
             </div>
           </section>
@@ -106,60 +96,57 @@ export default function CreatePage() {
 
   return (
     <EditableSiteShell>
-      <main className="min-h-screen bg-[var(--editable-page-bg,#fff7ee)] text-[var(--editable-page-text,#2f1d16)]">
-        <section className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid gap-8 rounded-[2.8rem] border border-[var(--editable-border)] bg-white/75 p-6 shadow-[0_30px_90px_rgba(15,23,42,0.08)] backdrop-blur lg:grid-cols-[0.85fr_1.15fr] lg:p-10">
-            <aside>
-              <p className="text-xs font-black uppercase tracking-[0.28em] opacity-55">{pagesContent.create.hero.badge}</p>
-              <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.08em] sm:text-7xl">{pagesContent.create.hero.title}</h1>
-              <p className="mt-6 max-w-xl text-base font-semibold leading-8 opacity-70">{pagesContent.create.hero.description}</p>
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                {enabledTasks.map((item) => {
-                  const Icon = taskIcon[item.key] || FileText
-                  const active = item.key === task
-                  return (
-                    <button key={item.key} type="button" onClick={() => setTask(item.key)} className={`rounded-2xl border p-4 text-left transition ${active ? 'border-current bg-[var(--editable-page-text,#2f1d16)] text-[var(--editable-page-bg,#fff7ee)]' : 'border-[var(--editable-border)] bg-white hover:-translate-y-0.5'}`}>
-                      <Icon className="h-5 w-5" />
-                      <span className="mt-3 block text-sm font-black">{item.label}</span>
-                      <span className="mt-1 block text-xs font-semibold opacity-65">{item.description}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </aside>
+      <main className="min-h-screen bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
+        <header className="editable-grain relative overflow-hidden bg-[var(--slot4-dark-bg)] text-[var(--slot4-dark-text)]">
+          <div className="pointer-events-none absolute right-[-8rem] top-[-14rem] h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(200,149,149,0.25),transparent_68%)]" />
+          <div className="relative mx-auto max-w-[var(--editable-container)] px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--slot4-accent)]">{pagesContent.create.hero.badge}</p>
+            <div className="mt-6 grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
+              <h1 className="editable-tech-type max-w-5xl text-[clamp(3.8rem,8vw,8.8rem)] font-medium leading-[0.84]">Share something worth seeing.</h1>
+              <p className="max-w-lg text-base leading-8 text-white/55 lg:pb-2">{pagesContent.create.hero.description}</p>
+            </div>
+          </div>
+        </header>
 
-            <form onSubmit={submit} className="rounded-[2.2rem] border border-[var(--editable-border)] bg-[var(--editable-page-bg,#fff7ee)] p-5 sm:p-7">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.22em] opacity-50">Create {activeTask?.label || 'post'}</p>
-                  <h2 className="mt-1 text-3xl font-black tracking-[-0.06em]">{pagesContent.create.formTitle}</h2>
+        <section className="mx-auto grid max-w-[var(--editable-container)] gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.48fr_1.52fr] lg:px-12">
+          <aside className="lg:sticky lg:top-32 lg:self-start">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--slot4-accent-fill)]">Publishing desk</p>
+            <h2 className="mt-5 text-4xl font-medium leading-tight">One clear path from idea to post.</h2>
+            <div className="mt-10 border-t border-[var(--editable-border)]">
+              {['Shape the idea', 'Add the context', 'Review and publish'].map((label, index) => (
+                <div key={label} className="flex items-center gap-5 border-b border-[var(--editable-border)] py-5">
+                  <span className="text-xs text-[var(--slot4-accent-fill)]">0{index + 1}</span><span className="text-sm font-medium">{label}</span>
                 </div>
-                <span className="rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em]">{session.name}</span>
+              ))}
+            </div>
+            <div className="mt-8 flex items-center gap-3 text-sm text-[var(--slot4-muted-text)]"><ImageIcon className="h-4 w-4" /> Publishing as {activeTask?.label || 'post'}</div>
+          </aside>
+
+          <form onSubmit={submit} className="border border-[var(--editable-border)] bg-[var(--slot4-cream)] p-6 sm:p-10 lg:p-14">
+            <div className="flex flex-col gap-4 border-b border-[var(--editable-border)] pb-8 sm:flex-row sm:items-end sm:justify-between">
+              <div><p className="text-xs uppercase tracking-[0.25em] text-[var(--slot4-muted-text)]">New submission</p><h2 className="mt-3 text-4xl font-medium">{pagesContent.create.formTitle}</h2></div>
+              <span className="text-sm text-[var(--slot4-muted-text)]">Signed in as <strong className="text-[var(--slot4-page-text)]">{session.name}</strong></span>
+            </div>
+
+            <div className="mt-8 grid gap-x-8 gap-y-7">
+              <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Title *</span><input className={fieldClass} value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Give the post a clear title" required /></label>
+              <div className="grid gap-7 sm:grid-cols-2">
+                <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Category</span><input className={fieldClass} value={category} onChange={(event) => setCategory(event.target.value)} placeholder="Choose a useful category" /></label>
+                <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Source URL</span><input className={fieldClass} value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://" /></label>
               </div>
+              <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Featured image</span><input className={fieldClass} value={image} onChange={(event) => setImage(event.target.value)} placeholder="Paste an image URL" /></label>
+              <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Short summary *</span><textarea className={`${fieldClass} min-h-28 resize-y`} value={summary} onChange={(event) => setSummary(event.target.value)} placeholder="What should readers know first?" required /></label>
+              <label><span className="text-xs font-semibold uppercase tracking-[0.2em]">Main content *</span><textarea className={`${fieldClass} min-h-64 resize-y`} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Add the complete story, details, or description" required /></label>
+            </div>
 
-              <div className="mt-6 grid gap-4">
-                <input className={fieldClass} value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Post title" required />
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <input className={fieldClass} value={category} onChange={(event) => setCategory(event.target.value)} placeholder="Category" />
-                  <input className={fieldClass} value={url} onChange={(event) => setUrl(event.target.value)} placeholder="Website or source URL" />
-                </div>
-                <input className={fieldClass} value={image} onChange={(event) => setImage(event.target.value)} placeholder="Featured image URL" />
-                <textarea className={`${fieldClass} min-h-24`} value={summary} onChange={(event) => setSummary(event.target.value)} placeholder="Short summary" required />
-                <textarea className={`${fieldClass} min-h-48`} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Main content, details, notes, or description" required />
-              </div>
+            {created ? <div className="mt-8 border border-[var(--slot4-accent-fill)] bg-[var(--slot4-accent-soft)] p-5"><p className="flex items-center gap-2 text-sm font-semibold"><CheckCircle2 className="h-5 w-5" /> {pagesContent.create.successTitle}</p><p className="mt-1 text-sm text-[var(--slot4-muted-text)]">{created.title}</p></div> : null}
 
-              {created ? (
-                <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
-                  <p className="flex items-center gap-2 text-sm font-black"><CheckCircle2 className="h-5 w-5" /> {pagesContent.create.successTitle}</p>
-                  <p className="mt-1 text-sm font-semibold opacity-80">{created.title}</p>
-                </div>
-              ) : null}
-
-              <button type="submit" className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--editable-page-text,#2f1d16)] px-6 text-sm font-black uppercase tracking-[0.18em] text-[var(--editable-page-bg,#fff7ee)] transition hover:-translate-y-0.5">
+            <div className="mt-10 flex justify-end">
+              <button type="submit" className="inline-flex min-h-14 items-center justify-center gap-3 bg-[var(--slot4-accent-fill)] px-8 text-sm font-semibold text-[var(--slot4-on-accent)] transition hover:bg-[#171415]">
                 <Send className="h-4 w-4" /> {pagesContent.create.submitLabel}
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </section>
       </main>
     </EditableSiteShell>

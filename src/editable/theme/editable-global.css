@@ -12,8 +12,6 @@
   Do not add data fetching, scripts, or route logic here.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 /* Per-task display + body typefaces (consumed via task-themes.ts). */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
@@ -25,9 +23,8 @@ body {
 }
 
 .editable-site-root {
-  /* Yelp-style clean sans, used for both display and body. */
-  --editable-font-display: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  --editable-font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --editable-font-display: 'Fraunces', Georgia, serif;
+  --editable-font-body: 'Space Grotesk', system-ui, sans-serif;
   /* Premium easing curve used across every hover + transition. */
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
   font-family: var(--editable-font-body);
@@ -83,7 +80,36 @@ body {
 .editable-site-root h4,
 .editable-display {
   font-family: var(--editable-font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.045em;
+}
+
+.editable-tech-type {
+  font-family: var(--editable-font-body) !important;
+  letter-spacing: -0.06em;
+}
+
+.editable-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 239, 234, 0.42);
+}
+
+.editable-grain {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(200, 149, 149, 0.08) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1.5px);
+  background-size: 23px 23px, 31px 31px;
+}
+
+.editable-marquee-track {
+  animation: editable-marquee 28s linear infinite;
+}
+
+@keyframes editable-marquee {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editable-marquee-track { animation: none; }
 }
 
 .editable-site-root p,

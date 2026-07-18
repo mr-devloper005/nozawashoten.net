@@ -80,7 +80,7 @@ const taskGrid: Record<TaskKey, string> = {
 }
 
 // Shared premium surface: hairline border, soft radius, smooth lift on hover.
-const cardBase = 'group block rounded-[var(--tk-radius)] border border-[var(--tk-line)] bg-[var(--tk-surface)] transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_32px_72px_rgba(15,23,42,0.14)]'
+const cardBase = 'group block rounded-[var(--tk-radius)] border border-[var(--tk-line)] bg-[var(--tk-surface)] transition duration-500 hover:-translate-y-2 hover:shadow-[0_32px_72px_rgba(108,74,74,0.18)]'
 
 export async function EditableTaskArchiveRoute({
   task,
@@ -110,50 +110,50 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   return (
     <EditableSiteShell>
       <main style={taskThemeStyle(task)} className="min-h-screen bg-[var(--tk-bg)] text-[var(--tk-text)]">
-        <header className="relative overflow-hidden border-b border-[var(--tk-line)]">
-          <div className="pointer-events-none absolute inset-x-0 -top-40 h-96 bg-[radial-gradient(60%_60%_at_50%_0%,var(--tk-glow),transparent_70%)]" />
-          <div className="relative mx-auto max-w-[var(--editable-container)] px-6 py-20 sm:py-28 lg:px-8">
+        <header className="editable-grain relative overflow-hidden border-b border-white/10 bg-[#0d0d10] text-[#f4efea]">
+          <div className="pointer-events-none absolute inset-x-0 -top-48 h-[34rem] bg-[radial-gradient(50%_70%_at_50%_0%,rgba(200,149,149,0.3),transparent_72%)]" />
+          <div className="relative mx-auto max-w-[var(--editable-container)] px-6 py-20 sm:py-28 lg:px-12 lg:py-32">
             <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-[var(--tk-accent)]">
               <span>{theme.kicker}</span>
               <span className="h-1 w-1 rounded-full bg-[var(--tk-accent)] opacity-50" />
-              <span className="text-[var(--tk-muted)]">{label}</span>
+              <span className="text-white/45">{label}</span>
             </div>
-            <h1 className="editable-display mt-6 max-w-3xl text-balance text-[2.5rem] font-semibold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl">
+            <h1 className="editable-tech-type mt-7 max-w-5xl text-balance text-[clamp(3.4rem,8vw,8.8rem)] font-medium leading-[0.86] text-[#f4efea]">
               {voice?.headline || `Browse ${label}`}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--tk-muted)]">{voice?.description || theme.note}</p>
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-white/58">{voice?.description || theme.note}</p>
             {voice?.chips?.length ? (
               <div className="mt-8 flex flex-wrap gap-2.5">
                 {voice.chips.map((chip) => (
-                  <span key={chip} className="rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--tk-muted)]">{chip}</span>
+                  <span key={chip} className="rounded-full border border-white/18 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white/64">{chip}</span>
                 ))}
               </div>
             ) : null}
 
-            <div className="mt-12 flex flex-col gap-4 border-t border-[var(--tk-line)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[var(--tk-muted)]">
-                <span className="font-semibold text-[var(--tk-text)]">{posts.length}</span> {posts.length === 1 ? 'post' : 'posts'} · {categoryLabel}
+            <div className="mt-14 flex flex-col gap-4 border-t border-white/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-white/48">
+                <span className="font-semibold text-white">{posts.length}</span> {posts.length === 1 ? 'post' : 'posts'} · {categoryLabel}
               </p>
               <form action={basePath} className="flex items-center gap-2.5">
                 <div className="relative">
                   <select
                     name="category"
                     defaultValue={category}
-                    className="h-11 appearance-none rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] pl-4 pr-10 text-sm font-medium text-[var(--tk-text)] outline-none transition focus:border-[var(--tk-accent)]"
+                    className="h-11 appearance-none rounded-full border border-white/20 bg-[#171415] pl-4 pr-10 text-sm font-medium text-white outline-none transition focus:border-[var(--slot4-accent)]"
                     aria-label={voice?.filterLabel || 'Filter category'}
                   >
                     <option value="all">All categories</option>
                     {CATEGORY_OPTIONS.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--tk-muted)]" />
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
                 </div>
-                <button className="inline-flex h-11 items-center rounded-full bg-[var(--tk-accent)] px-5 text-sm font-semibold text-[var(--tk-on-accent)] transition hover:opacity-90">Apply</button>
+                <button className="inline-flex h-11 items-center rounded-full bg-[var(--slot4-accent)] px-5 text-sm font-semibold text-[#171415] transition hover:bg-[var(--slot4-accent-soft)]">Apply</button>
               </form>
             </div>
           </div>
         </header>
 
-        <section className="mx-auto max-w-[var(--editable-container)] px-6 py-16 sm:py-20 lg:px-8">
+        <section className="mx-auto max-w-[var(--editable-container)] px-6 py-16 sm:py-24 lg:px-12">
           {posts.length ? (
             <div className={taskGrid[task]}>
               {posts.map((post, index) => <ArchivePostCard key={post.id || post.slug} post={post} task={task} basePath={basePath} index={index} />)}
