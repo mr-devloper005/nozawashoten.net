@@ -12,46 +12,43 @@ export function EditableFooter() {
   const { session, logout } = useEditableLocalAuthSession()
 
   return (
-    <footer className="border-t border-[var(--editable-border)] bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
-      <div className="h-[2px] bg-[linear-gradient(90deg,transparent_0%,var(--slot4-accent)_50%,transparent_100%)]" />
-      <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
-        <div>
-          <Link href="/" className="inline-flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center border border-[var(--slot4-accent)]/40 bg-[var(--slot4-surface-bg)]">
-              <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
-            </span>
-            <span className="editable-display text-xl font-semibold tracking-[0.01em]">{SITE_CONFIG.name}</span>
+    <footer className="overflow-hidden bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
+      <div className="border-b border-white/10 px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+        <div className="mx-auto flex max-w-[var(--editable-container)] flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--slot4-accent)]">Stay curious</p>
+            <h2 className="editable-tech-type mt-4 max-w-4xl text-[clamp(2.8rem,7vw,7.5rem)] font-medium leading-[0.86] text-[#f4efea]">
+              Ideas built to move business forward.
+            </h2>
+          </div>
+          <Link href="/contact" className="group inline-flex shrink-0 items-center gap-4 border-b border-white/40 pb-3 text-xl font-medium transition hover:border-[var(--slot4-accent)] hover:text-[var(--slot4-accent)]">
+            Start a conversation <ArrowUpRight className="h-5 w-5 transition group-hover:-translate-y-1 group-hover:translate-x-1" />
           </Link>
-          <p className="mt-4 max-w-md text-sm leading-7 text-[var(--slot4-muted-text)]">{globalContent.footer?.description || SITE_CONFIG.description}</p>
         </div>
+      </div>
 
+      <div className="mx-auto grid max-w-[var(--editable-container)] gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-12">
         <div>
-          <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[var(--slot4-accent)]">Explore</h3>
-          <div className="mt-4 grid gap-2">
-            {taskLinks.map((task) => (
-              <Link key={task.key} href={task.route} className="inline-flex items-center gap-2 text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">
-                {task.label} <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
-            ))}
+          <Link href="/" className="editable-tech-type text-3xl font-semibold">{SITE_CONFIG.name}</Link>
+          <p className="mt-5 max-w-md text-sm leading-7 text-white/55">{globalContent.footer?.description || SITE_CONFIG.description}</p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.24em] text-[var(--slot4-accent)]">Discover</p>
+          <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3">
+            {taskLinks.map((task) => <Link key={task.key} href={task.route} className="text-sm text-white/65 transition hover:text-white">{task.label}</Link>)}
           </div>
         </div>
-
         <div>
-          <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[var(--slot4-accent)]">Site</h3>
-          <div className="mt-4 grid gap-2">
-            {[
-              ['About', '/about'],
-              ['Contact', '/contact'],
-              ...(session ? [['Create', '/create']] : [['Login', '/login'], ['Sign up', '/signup']]),
-            ].map(([label, href]) => (
-              <Link key={href} href={href} className="text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">{label}</Link>
-            ))}
-            {session ? <button type="button" onClick={logout} className="text-left text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">Logout</button> : null}
+          <p className="text-xs uppercase tracking-[0.24em] text-[var(--slot4-accent)]">Connect</p>
+          <div className="mt-5 grid gap-3">
+            <Link href="/about" className="text-sm text-white/65 hover:text-white">About</Link>
+            <Link href="/contact" className="text-sm text-white/65 hover:text-white">Contact</Link>
+            {session ? <><Link href="/create" className="text-sm text-white/65 hover:text-white">Create</Link><button type="button" onClick={logout} className="text-left text-sm text-white/65 hover:text-white">Log out</button></> : <Link href="/login" className="text-sm text-white/65 hover:text-white">Sign in</Link>}
           </div>
         </div>
       </div>
-      <div className="border-t border-[var(--editable-border)] px-4 py-5 text-center text-xs font-medium tracking-[0.12em] text-[var(--slot4-muted-text)]">
-        © {year} {SITE_CONFIG.name}. All rights reserved.
+      <div className="mx-auto flex max-w-[var(--editable-container)] flex-col gap-2 border-t border-white/10 px-5 py-5 text-[11px] uppercase tracking-[0.18em] text-white/35 sm:flex-row sm:justify-between sm:px-8 lg:px-12">
+        <span>© {year} {SITE_CONFIG.name}</span><span>Made for thoughtful discovery</span>
       </div>
     </footer>
   )
