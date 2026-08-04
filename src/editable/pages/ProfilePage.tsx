@@ -1,17 +1,17 @@
-import { notFound } from 'next/navigation'
+import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
 
 export const revalidate = 3
 
-export const generateMetadata = () => ({ title: 'Not Found', robots: { index: false, follow: false } })
+export const generateMetadata = () => taskMetadata('profile', '/profile')
 
 export async function ProfilePageTaskPage({
-  searchParams: _searchParams,
-  basePath: _basePath,
+  searchParams,
+  basePath = '/profile',
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
   basePath?: string
 }) {
-  return notFound()
+  return <EditableTaskArchiveRoute task="profile" searchParams={searchParams} basePath={basePath} />
 }
 
 export default ProfilePageTaskPage
