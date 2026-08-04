@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { EditableTaskDetailRoute, generateEditableDetailMetadata } from '@/editable/pages/TaskDetailPage'
 
 export const revalidate = 3
 
@@ -6,11 +6,10 @@ export async function generateStaticParams() {
   return []
 }
 
-export async function generateMetadata({ params: _params }: { params: Promise<{ username: string }> }) {
-  return { title: 'Not Found', robots: { index: false, follow: false } }
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+  return generateEditableDetailMetadata('profile', params)
 }
 
 export default async function ProfileDetailPage({ params }: { params: Promise<{ username: string }> }) {
-  await params
-  return notFound()
+  return <EditableTaskDetailRoute task="profile" params={params} />
 }
